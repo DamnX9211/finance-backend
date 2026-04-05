@@ -25,7 +25,8 @@ def get(
     start_date: date | None = None,
     end_date: date | None = None,
     db: Session = Depends(get_db),
-    user = Depends(require_role(["admin", "analyst"]))
+    user = Depends(require_role(["admin", "analyst"])),
+    limit: int = 10, offset: int = 0
 ):
     filters = {
         "type": type,

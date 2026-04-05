@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+
 from sqlalchemy.orm import Session
 from app.models.record import FinancialRecord
 
@@ -21,7 +23,7 @@ def create_record(db: Session, data, user_id: int):
 
 
 def get_records(db: Session, filters: dict):
-    query = db.query(FinancialRecord)
+    query = db.query(FinancialRecord).offset(filters.get("offset", 0)).limit(filters.get("limit", 10))
 
     if filters.get("type"):
         query = query.filter(FinancialRecord.type == filters["type"])
@@ -43,7 +45,7 @@ def update_record(db: Session, record_id: int, data):
     record = db.query(FinancialRecord).filter(FinancialRecord.id == record_id).first()
 
     if not record:
-        raise Exception("Record not found")
+        raise HTTPException(status_code=404, detail="Record not found")
     
     for key, value in data.dict(exclude_unset=True).items():
         setattr(record, key, value)

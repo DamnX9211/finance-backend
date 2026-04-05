@@ -8,7 +8,7 @@ from app.models.user import UserRole
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
-@router.get("/me")
+@router.get("/")
 def get_users(
     db: Session = Depends(get_db),
     user = Depends(require_role(["admin"]))

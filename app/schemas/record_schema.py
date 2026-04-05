@@ -1,8 +1,13 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
+import enum
+
+class RecordType(str, enum.Enum):
+    income = "income"
+    expense = "expense"
 
 class RecordCreate(BaseModel):
-    amount: float
+    amount: float = Field(..., gt=0)
     type: str
     category: str
     date: datetime

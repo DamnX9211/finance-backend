@@ -37,3 +37,37 @@ def authenticate_user(db: Session, email: str, password: str):
         return None
     
     return user
+
+
+
+# get all user for admin
+def get_all_users(db: Session):
+    return db.query(User).all()
+
+
+# update user role for admin
+def update_user_role(db, user_id: int, new_role):
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise Exception("User not found")
+    
+    user.role = new_role
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+
+# toggle user active status for admin
+def toggle_user_status(db, user_id: int):
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise Exception("User not found")
+    
+    user.is_active = not user.is_active
+    db.commit()
+    db.refresh(user)
+
+    return user

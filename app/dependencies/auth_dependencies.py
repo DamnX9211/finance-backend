@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException
 from jose import jwt
-from app.core.security import SECRET_KEY, ALGORITHM
+from app.core.security import verify_password
 from app.core.config import settings
 from sqlalchemy.orm import Session
 from app.db.database import SessionLocal

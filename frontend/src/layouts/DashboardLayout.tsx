@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import type { ChildrenProps } from "../types/common";
 
-export default function DashboardLayout({ children }: any) {
+export default function DashboardLayout({ children }: ChildrenProps) {
   return (
     <div className="flex min-h-screen">
 

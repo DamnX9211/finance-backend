@@ -5,7 +5,7 @@ import type { ChildrenProps } from "../../types/common";
 export default function ProtectedRoute({ children }: ChildrenProps) {
     const {token} = useAuth();
 
-    if(token) return <Navigate to="/" replace/>;
-    
+    if(!token) return <Navigate to="/login" replace/>;
+
     return children;
 }

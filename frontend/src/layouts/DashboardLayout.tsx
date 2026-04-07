@@ -1,21 +1,68 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../features/auth/AuthContext";
 import type { ChildrenProps } from "../types/common";
+import { LogOut, LogIn, LayoutDashboard, Receipt, Users, Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export default function DashboardLayout({ children }: ChildrenProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const { token, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen relative">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="absolute top-4 left-4 z-20 p-2 rounded-md text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 md:hidden"
+        >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      <div className="w-64 bg-black text-white p-6 flex flex-col justify-between">
+        
+        <div className="space-y-8">
+          <h2 className="text-2xl font-bold tracking-tight">
+            Finance<span className="text-blue-500">DO</span>
+          </h2>
 
-      {/* Sidebar */}
-      <div className="w-64 bg-black text-white p-4 space-y-4">
-        <h2 className="text-xl font-bold">Finance</h2>
+          <nav className="flex flex-col space-y-4">
+            <Link to="/dashboard" className="flex items-center gap-3 hover:text-blue-400 transition-colors">
+              <LayoutDashboard size={18} /> Dashboard
+            </Link>
+            <Link to="/records" className="flex items-center gap-3 hover:text-blue-400 transition-colors">
+              <Receipt size={18} /> Records
+            </Link>
+            <Link to="/users" className="flex items-center gap-3 hover:text-blue-400 transition-colors">
+              <Users size={18} /> Users
+            </Link>
+          </nav>
+        </div>
 
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/records">Records</Link>
-        <Link to="/users">Users</Link>
+      
+        <div className="pt-6 border-t border-gray-800">
+          {token ? (
+            <button 
+              onClick={handleLogout}
+              className="flex items-center gap-3 text-red-400 hover:text-red-300 transition-colors w-full"
+            >
+              <LogOut size={18} /> Logout
+            </button>
+          ) : (
+            <Link 
+              to="/login" 
+              className="flex items-center gap-3 text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              <LogIn size={18} /> Login
+            </Link>
+          )}
+        </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-6 bg-gray-50">
+      <div className="flex-1 p-8 bg-gray-50 overflow-y-auto">
         {children}
       </div>
     </div>

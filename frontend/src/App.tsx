@@ -1,10 +1,13 @@
+import { Link } from "lucide-react"
 
 const App = () => {
   return (
     <div>
-      <h1 className="text-6xl font-bold underline">
-        Hello world!
-      </h1>
+       <p className="text-sm text-center text-gray-600">
+            <Link to="/dashboard" className="text-blue-600 hover:underline">
+              Dashboard
+            </Link>
+          </p>
     </div>
   )
 }

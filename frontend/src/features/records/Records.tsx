@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { RecordItem } from "../../types/record";
 import { deleteRecord, getRecords } from "./record.api";
 import { Input } from "../../components/ui/input";
@@ -17,10 +17,11 @@ export default function Records() {
     category: "",
   });
 
-  const fetchRecords = async () => {
+  const fetchRecords = useCallback(async () => {
     try {
       setLoading(true);
       const res = await getRecords(filters);
+      console.log("API Response:", res);
       setRecords(res);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -31,11 +32,11 @@ export default function Records() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [filters]);
 
   useEffect(() => {
     fetchRecords();
-  }, []);
+  }, [fetchRecords]);
 
   const handleDelete = async (id: number) => {
     await deleteRecord(id);
@@ -43,13 +44,15 @@ export default function Records() {
   }
     if (loading) return <p>Loading records...</p>;
     if (error) return <p>Error: {error}</p>;
-    if (records.length === 0) return <p>No records found.</p>;
+    
   
     return (
 
       <div className="space-y-6">
-        {True && <CreateRecordModel onSuccess={fetchRecords} />}
+        
         <h1 className="text-2xl font-bold tracking-tight">Records</h1>
+
+        <CreateRecordModel onSuccess={fetchRecords} amount={0} type={"income"} category={""} date={""} />
 
         <div className="space-y-4">
           <Input
@@ -64,11 +67,14 @@ export default function Records() {
           />
            <Button onClick={fetchRecords}>Apply</Button>
         </div>
-        
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Category</TableHead>
+
+        {records.length === 0 ? (
+         <p>No records found</p>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Category</TableHead>
               <TableHead>Type</TableHead>
               <TableHead>Amount</TableHead>
               <TableHead>Date</TableHead>
@@ -92,6 +98,7 @@ export default function Records() {
             ))}
           </TableBody>
         </Table>
+        )}
       </div>
     )
 

@@ -13,7 +13,7 @@ def create_record(db: Session, data, user_id: int):
         notes=data.notes,
         created_by=user_id
     )
-
+    
 
     db.add(record)
     db.commit()

@@ -1,11 +1,11 @@
 from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from app.core.security import verify_password
 from app.core.config import settings
 from sqlalchemy.orm import Session
 from app.db.database import SessionLocal
 from app.models.user import User
+from fastapi import Header
 
 def get_db():
     db = SessionLocal()
@@ -13,11 +13,12 @@ def get_db():
         yield db
     finally:
         db.close()  
+       
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")        
-
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session=Depends(get_db)):
+def get_current_user(authorization: str = Header(...), db: Session=Depends(get_db)):
     try:
+        # Extract the token from the Authorization header
+        token = authorization.split(" ")[1]  # Assumes "Bearer <token>"
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         user_id = payload.get("user_id")
     except:

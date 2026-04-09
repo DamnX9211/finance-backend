@@ -1,5 +1,5 @@
 import api from "../../shared/api/client";
-import type { GetRecordsParams, RecordItem } from "../../types/record";
+
 
 // create record
 export const createRecord = async (data: any) => {
@@ -8,12 +8,16 @@ export const createRecord = async (data: any) => {
 }
 
 // get records
-export const getRecords = async (
-    params: GetRecordsParams
-): Promise<RecordItem[]> => {
-    const res = await api.get("/records", { params });
-    return res.data;
-}
+export const getRecords = async (params: any) => {
+  const cleanParams: any = {};
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value) cleanParams[key] = value;
+  });
+
+  const res = await api.get("/records/", { params: cleanParams });
+  return res.data;
+};
 
 // update record
 export const updateRecord = async (id: number, data: any) => {

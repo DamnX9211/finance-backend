@@ -23,7 +23,8 @@ def create_record(db: Session, data, user_id: int):
 
 
 def get_records(db: Session, filters: dict):
-    query = db.query(FinancialRecord).offset(filters.get("offset", 0)).limit(filters.get("limit", 10))
+    query = db.query(FinancialRecord)
+
 
     if filters.get("type"):
         query = query.filter(FinancialRecord.type == filters["type"])
@@ -36,6 +37,9 @@ def get_records(db: Session, filters: dict):
 
     if filters.get("end_date"):
         query = query.filter(FinancialRecord.date <= filters["end_date"])
+
+    if filters.get("user_id"):
+        query = query.filter(FinancialRecord.created_by == filters["user_id"])
 
     return query.all()        
 
@@ -61,7 +65,7 @@ def delete_record(db: Session, record_id: int):
     record = db.query(FinancialRecord).filter(FinancialRecord.id == record_id).first()
 
     if not record:
-        raise Exception("Record not found")
+        raise HTTPException(status_code=404, detail="Record not found")
     
     db.delete(record)
     db.commit()

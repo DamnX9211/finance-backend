@@ -26,13 +26,13 @@ def get(
     end_date: date | None = None,
     db: Session = Depends(get_db),
     user = Depends(require_role(["admin", "analyst"])),
-    limit: int = 10, offset: int = 0
 ):
     filters = {
         "type": type,
         "category": category,
         "start_date": start_date,
-        "end_date": end_date
+        "end_date": end_date,
+        "user_id": user.id
     }
     return get_records(db, filters)
 

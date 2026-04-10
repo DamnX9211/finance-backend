@@ -5,12 +5,14 @@ import { Input } from "../../components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
 import { Button } from "../../components/ui/button";
 import CreateRecordModel from "./CraeteRecordModel";
+import { useAuth } from "../auth/AuthContext";
 
 
 export default function Records() {
   const [records, setRecords] = useState<RecordItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { role } = useAuth();
 
   const [filters, setFilters] = useState({
     type: "",
@@ -43,7 +45,6 @@ export default function Records() {
     fetchRecords();
   }
     if (loading) return <p>Loading records...</p>;
-    if (error) return <p>Error: {error}</p>;
     
   
     return (
@@ -51,8 +52,10 @@ export default function Records() {
       <div className="space-y-6">
         
         <h1 className="text-2xl font-bold tracking-tight">Records</h1>
-
-        <CreateRecordModel onSuccess={fetchRecords} amount={0} type={"income"} category={""} date={""} />
+        {role === "admin" && (
+          <CreateRecordModel onSuccess={fetchRecords} amount={0} type={"income"} category={""} date={""} />
+        )}
+        
 
         <div className="space-y-4">
           <Input
@@ -90,9 +93,11 @@ export default function Records() {
                 <TableCell>{r.amount}</TableCell>
                 <TableCell>{r.date}</TableCell>
                 <TableCell>
-                  <Button variant="destructive" onClick={() => handleDelete(r.id)}>
-                    Delete
-                  </Button>
+                  {role === "admin" && (
+                    <Button variant="destructive" onClick={() => handleDelete(r.id)}>
+                      Delete
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

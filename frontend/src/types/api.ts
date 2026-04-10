@@ -12,10 +12,10 @@ export interface RegisterResponse {
 export interface LoginRequest {
     email: string;
     password: string;
-
 }
 
 export interface LoginResponse {
     access_token: string;
     token_type: string;
+    role: "admin" | "analyst" | "viewer";
 }

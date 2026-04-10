@@ -21,7 +21,7 @@ export default function Login() {
       setError("");
 
       const res = await LoginApi({ email, password });
-      login(res.access_token);
+      login(res.access_token, res.role);
       navigate("/dashboard");
     } catch (error: unknown) {
       if (error instanceof Error) {

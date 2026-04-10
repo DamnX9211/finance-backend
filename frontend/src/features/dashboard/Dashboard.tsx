@@ -29,10 +29,12 @@ export default function Dashboard() {
   }, []);
 
   if (loading) return <div>Loading Dashboard...</div>;
-  if (error) return <div>Error: {error}</div>;
+ 
   if (!data) return <div>No data available</div>;
+   if (error) return <div>Error: {error}</div>;
 
   return (
+    
     <div className="space-y-6">
       <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

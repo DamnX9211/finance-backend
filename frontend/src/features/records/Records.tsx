@@ -1,13 +1,18 @@
 import { useCallback, useEffect, useState } from "react";
 import type { RecordItem } from "../../types/record";
 import { deleteRecord, getRecords } from "./record.api";
-import { Input } from "../../components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../components/ui/table";
 import { Button } from "../../components/ui/button";
 import CreateRecordModel from "./CraeteRecordModel";
 import { useAuth } from "../auth/AuthContext";
 import EditRecordModel from "./EditRecordModel";
-
 
 export default function Records() {
   const [records, setRecords] = useState<RecordItem[]>([]);
@@ -44,41 +49,43 @@ export default function Records() {
   const handleDelete = async (id: number) => {
     await deleteRecord(id);
     fetchRecords();
-  }
-    if (loading) return <p>Loading records...</p>;
-    
-  
-    return (
+  };
+  if (loading) return <p>Loading records...</p>;
 
-      <div className="space-y-6">
-        
-        <h1 className="text-2xl font-bold tracking-tight">Records</h1>
-        {role === "admin" && (
-          <CreateRecordModel onSuccess={fetchRecords} amount={0} type={"income"} category={""} date={""} />
-        )}
-        
+  return (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold tracking-tight">Records</h1>
+      {role === "admin" && (
+        <CreateRecordModel
+          onSuccess={fetchRecords}
+          amount={0}
+          type={"income"}
+          category={""}
+          date={""}
+        />
+      )}
 
-        <div className="space-y-4">
-          <Input
-            placeholder="Type (income/expense)"
-            value={filters.type}
-            onChange={(e) => setFilters({ ...filters, type: e.target.value })}
-          />
-          <Input
-            placeholder="Category"
-            value={filters.category}
-            onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-          />
-           <Button onClick={fetchRecords}>Apply</Button>
-        </div>
+      <div className="space-y flex items-center gap-4">
+        <select
+          value={filters.type}
+          onChange={(e) => setFilters({ ...filters, type: e.target.value })}
+          className="border p-2 rounded"
+        >
+          <option value="">All</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
 
-        {records.length === 0 ? (
-         <p>No records found</p>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Category</TableHead>
+        <Button onClick={fetchRecords}>Apply</Button>
+      </div>
+
+      {records.length === 0 ? (
+        <p>No records found</p>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Category</TableHead>
               <TableHead>Type</TableHead>
               <TableHead>Amount</TableHead>
               <TableHead>Date</TableHead>
@@ -95,11 +102,14 @@ export default function Records() {
                 <TableCell>{r.date}</TableCell>
                 <TableCell className="space-x-2">
                   {role === "admin" && (
-                    <>  
-                    <EditRecordModel record={r} onSuccess={fetchRecords} />
-                    <Button variant="destructive" onClick={() => handleDelete(r.id)}>
-                      Delete
-                    </Button>
+                    <>
+                      <EditRecordModel record={r} onSuccess={fetchRecords} />
+                      <Button
+                        variant="destructive"
+                        onClick={() => handleDelete(r.id)}
+                      >
+                        Delete
+                      </Button>
                     </>
                   )}
                 </TableCell>
@@ -107,8 +117,7 @@ export default function Records() {
             ))}
           </TableBody>
         </Table>
-        )}
-      </div>
-    )
-
+      )}
+    </div>
+  );
 }

@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Button } from "../../components/ui/button";
 import CreateRecordModel from "./CraeteRecordModel";
 import { useAuth } from "../auth/AuthContext";
+import EditRecordModel from "./EditRecordModel";
 
 
 export default function Records() {
@@ -92,11 +93,14 @@ export default function Records() {
                 <TableCell>{r.type}</TableCell>
                 <TableCell>{r.amount}</TableCell>
                 <TableCell>{r.date}</TableCell>
-                <TableCell>
+                <TableCell className="space-x-2">
                   {role === "admin" && (
+                    <>  
+                    <EditRecordModel record={r} onSuccess={fetchRecords} />
                     <Button variant="destructive" onClick={() => handleDelete(r.id)}>
                       Delete
                     </Button>
+                    </>
                   )}
                 </TableCell>
               </TableRow>

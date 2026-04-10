@@ -53,7 +53,8 @@ export default function CreateRecordModel({ onSuccess }: CreateRecordRequest & {
                     onChange={(e) => setForm({ ...form, category: e.target.value })}
                 />
                 <Input
-                    placeholder="Date (YYYY-MM-DD)"
+                    type="date"
+                    placeholder="DD-MM-YYYY"
                     value={form.date}
                     onChange={(e) => setForm({ ...form, date: e.target.value })}
                 />

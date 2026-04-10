@@ -16,3 +16,8 @@ export interface GetRecordsParams {
     limit?: number;
     offset?: number;
 }
+
+export interface EditProps {
+    record: RecordItem;
+    onSuccess: () => void;
+}

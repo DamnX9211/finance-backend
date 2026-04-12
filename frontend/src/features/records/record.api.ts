@@ -1,15 +1,16 @@
 import api from "../../shared/api/client";
+import type { EditProps, GetRecordsParams, RecordItem } from "../../types/record";
 
 
 // create record
-export const createRecord = async (data: any) => {
+export const createRecord = async (data: RecordItem) => {
     const res = await api.post("/records", data);
     return res.data;
 }
 
 // get records
-export const getRecords = async (params: any) => {
-  const cleanParams: any = {};
+export const getRecords = async (params: GetRecordsParams) => {
+  const cleanParams: GetRecordsParams = {};
 
   Object.entries(params).forEach(([key, value]) => {
     if (value) cleanParams[key] = value;
@@ -20,7 +21,7 @@ export const getRecords = async (params: any) => {
 };
 
 // update record
-export const updateRecord = async (id: number, data: any) => {
+export const updateRecord = async (id: number, data: EditProps) => {
     const res = await api.patch(`/records/${id}`, data);
     return res.data;
 }

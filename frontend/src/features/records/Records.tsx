@@ -13,6 +13,21 @@ import { Button } from "../../components/ui/button";
 import CreateRecordModel from "./CraeteRecordModel";
 import { useAuth } from "../auth/AuthContext";
 import EditRecordModel from "./EditRecordModel";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
+
+const types = [
+  { label: "All", value: "" },
+  { label: "Income", value: "income" },
+  { label: "Expense", value: "expense" },
+];
 
 export default function Records() {
   const [records, setRecords] = useState<RecordItem[]>([]);
@@ -51,6 +66,7 @@ export default function Records() {
     fetchRecords();
   };
   if (loading) return <p>Loading records...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="space-y-6">
@@ -66,15 +82,22 @@ export default function Records() {
       )}
 
       <div className="space-y flex items-center gap-4">
-        <select
-          value={filters.type}
-          onChange={(e) => setFilters({ ...filters, type: e.target.value })}
-          className="border p-2 rounded"
-        >
-          <option value="">All</option>
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
+        
+        <Select onValueChange={(value) => setFilters({ ...filters, type: value || "" })}>
+          <SelectTrigger className="w-45">
+            <SelectValue placeholder="Select Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Filter by Type</SelectLabel>
+              {types.map((t) => (
+                <SelectItem key={t.value} value={t.value}>
+                  {t.label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
         <Button onClick={fetchRecords}>Apply</Button>
       </div>

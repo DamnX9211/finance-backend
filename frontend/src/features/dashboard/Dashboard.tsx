@@ -38,25 +38,25 @@ export default function Dashboard() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="space-y-2">
-            <p>Total Income</p>
-            <h2 className="text-xl font-bold">{data.total_income}</h2>
+        <Card className="bg-zinc-800 border-zinc-700">
+          <CardContent className="p-5">
+            <p className="text-sm text-zinc-400">Total Income</p>
+            <h2 className="text-xl font-bold text-green-400">₹{data.total_income}</h2>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="space-y-2">
-            <p>Total Expenses</p>
-            <h2 className="text-xl font-bold">{data.total_expenses}</h2>
+        <Card className="bg-zinc-800 border-zinc-700">
+          <CardContent className="p-5">
+            <p className="text-sm text-zinc-400">Total Expenses</p>
+            <h2 className="text-xl font-bold text-red-400">₹{data.total_expense}</h2>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="space-y-2">
-            <p>Net Balance</p>
-            <h2 className={`text-xl font-bold ${data.net_balance >= 0 ? "text-green-600" : "text-red-600"}`}>
-              {data.net_balance}
+        <Card className="bg-zinc-800 border-zinc-700">
+          <CardContent className="p-5">
+            <p className="text-sm text-zinc-400">Net Balance</p>
+            <h2 className={`text-xl font-bold ${data.net_balance >= 0 ? "text-green-400" : "text-red-400"}`}>
+              ₹{data.net_balance}
             </h2>
           </CardContent>
         </Card>
@@ -72,7 +72,7 @@ export default function Dashboard() {
               className="flex justify-between border-b py-2"
             >
             <span>{item.category}</span>
-            <span>{item.total}</span>
+            <span>₹{item.total}</span>
           </div>
           ))}
         </div>
@@ -88,7 +88,7 @@ export default function Dashboard() {
               className="flex justify-between border-b py-2"
             >
               <span>{tx.category}</span>
-              <span>{tx.amount}</span>
+              <span>₹{tx.amount}</span>
               <span>{new Date(tx.date).toLocaleDateString()}</span>
             </div>
           ))}

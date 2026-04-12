@@ -42,7 +42,7 @@ export default function DashboardLayout({ children }: ChildrenProps) {
           </nav>
         </div>
 
-      
+      {/* logout section */}
         <div className="pt-6 border-t border-gray-800">
           {token ? (
             <button 
@@ -61,7 +61,7 @@ export default function DashboardLayout({ children }: ChildrenProps) {
           )}
         </div>
       </div>
-
+       {/* Main Section */}
       <div className="flex-1 p-8 bg-gray-50 overflow-y-auto">
         {children}
       </div>

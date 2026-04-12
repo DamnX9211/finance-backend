@@ -8,8 +8,12 @@ import Records from "../features/records/Records";
 import Users from "../features/users/Users";
 import Register from "../features/auth/Register";
 import App from "../App";
+import { useAuth } from "../features/auth/AuthContext";
+
+
 
 export default function AppRouter() {
+  const { role } = useAuth();
   return (
     <BrowserRouter>
       <Routes>
@@ -46,7 +50,7 @@ export default function AppRouter() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <Users />
+                {role === "admin" ? <Users /> : <p>Access Denied</p>}
               </DashboardLayout>
             </ProtectedRoute>
           }

@@ -8,7 +8,7 @@ export interface CategoryBreakdown {
 
 export interface DashboardData {
     total_income: number;
-    total_expenses: number;
+    total_expense: number;
     net_balance: number;
     category_breakdown: CategoryBreakdown[];
     recent_transactions: RecordItem[];

@@ -29,7 +29,7 @@ class RecordResponse(BaseModel):
       type: str
       category: str
       date: datetime
-      notes: str | None = None
+      notes: str | None
       created_by: int
 
       class config:

@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
+import { toast } from "sonner";
 
 const types = [
   { label: "All", value: "" },
@@ -62,7 +63,11 @@ export default function Records() {
   }, [fetchRecords]);
 
   const handleDelete = async (id: number) => {
+    const confirmed = window.confirm("Are you sure you want to delete this record?");
+    if (!confirmed) return;
+    console.log("Deleting record with ID:", id)
     await deleteRecord(id);
+    toast.success("Record deleted successfully");
     fetchRecords();
   };
   if (loading) return <p>Loading records...</p>;

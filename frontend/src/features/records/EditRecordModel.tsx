@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTrigger } from "../../components/ui/dialog
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import type { EditProps } from "../../types/record";
+import { toast } from "sonner";
 
 export default function EditRecordModel({ record, onSuccess }: EditProps) {
     const [form, setForm] = useState({
@@ -16,6 +17,7 @@ export default function EditRecordModel({ record, onSuccess }: EditProps) {
     const handleUpdate = async () => {
         await updateRecord(record.id, form);
         onSuccess();
+        toast.success("Record updated successfully");
     };
 
     return (

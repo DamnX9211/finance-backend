@@ -7,7 +7,7 @@ import {
 } from "../../components/ui/dialog";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
-import { Select } from "../../components/ui/select";
+import { toast } from "sonner";
 
 export interface CreateRecordRequest {
   amount: number;
@@ -31,8 +31,11 @@ export default function CreateRecordModel({
     await createRecord({
       ...form,
       amount: Number(form.amount),
+      id: 0,
+      created_by: ""
     });
     onSuccess();
+    toast.success("Record created successfully");
   };
 
   return (
@@ -64,7 +67,7 @@ export default function CreateRecordModel({
           value={form.date}
           onChange={(e) => setForm({ ...form, date: e.target.value })}
         />
-        <Button onClick={handleSubmit}>Save</Button>
+        <Button  onClick={handleSubmit}>Save</Button>
       </DialogContent>
     </Dialog>
   );

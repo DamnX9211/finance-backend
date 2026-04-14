@@ -45,11 +45,14 @@ def get_records(db: Session, filters: dict):
 
 
 
-def update_record(db: Session, record_id: int, data):
+def update_record(db: Session, record_id: int, data, user_id: int):
     record = db.query(FinancialRecord).filter(FinancialRecord.id == record_id).first()
 
     if not record:
         raise HTTPException(status_code=404, detail="Record not found")
+    
+    if record.created_by != user_id:
+        raise HTTPException(status_code=403, detail="Not authorized to update this record")
     
     for key, value in data.dict(exclude_unset=True).items():
         setattr(record, key, value)
@@ -61,12 +64,15 @@ def update_record(db: Session, record_id: int, data):
 
 
 
-def delete_record(db: Session, record_id: int):
+def delete_record(db: Session, record_id: int, user_id: int):
     record = db.query(FinancialRecord).filter(FinancialRecord.id == record_id).first()
 
     if not record:
         raise HTTPException(status_code=404, detail="Record not found")
-    
+
+    if record.created_by != user_id:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this record")
+
     db.delete(record)
     db.commit()
 

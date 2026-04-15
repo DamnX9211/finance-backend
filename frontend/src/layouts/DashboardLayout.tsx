@@ -30,13 +30,25 @@ export default function DashboardLayout({ children }: ChildrenProps) {
           </h2>
 
           <nav className="flex flex-col space-y-4">
-            <Link to="/dashboard" className="flex items-center gap-3 hover:text-blue-400 transition-colors">
+            <Link to="/dashboard" className={`block ${
+    location.pathname === "/dashboard"
+      ? "text-blue-400"
+      : "text-zinc-400"
+  }`}>
               <LayoutDashboard size={18} /> Dashboard
             </Link>
-            <Link to="/records" className="flex items-center gap-3 hover:text-blue-400 transition-colors">
+            <Link to="/records" className={`block ${
+    location.pathname === "/records"
+      ? "text-blue-400"
+      : "text-zinc-400"
+  }`}>
               <Receipt size={18} /> Records
             </Link>
-            <Link to="/users" className="flex items-center gap-3 hover:text-blue-400 transition-colors">
+            <Link to="/users" className={`block ${
+    location.pathname === "/users"
+      ? "text-blue-400"
+      : "text-zinc-400"
+  }`}>
               <Users size={18} /> Users
             </Link>
           </nav>

@@ -5,6 +5,7 @@ import { LoginApi } from "./auth.api";
 import { Card, CardContent } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
+import { toast } from "sonner";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
@@ -23,12 +24,13 @@ export default function Login() {
       const res = await LoginApi({ email, password });
       login(res.access_token, res.role);
       navigate("/dashboard");
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Something went wrong");
-      }
+    } catch (error) {
+        const errorMessage = error.response?.data?.detail || "Login failed";
+        setError(errorMessage);
+        toast.error(errorMessage, {
+          duration: 4000,
+          position: "top-right",
+        });
     } finally {
       setLoading(false);
     }
@@ -50,9 +52,7 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {error && (
-            <p className="text-red-500 text-center">{error}</p>
-          )}
+        
           <Button
             onClick={handleLogin}
             disabled={loading}

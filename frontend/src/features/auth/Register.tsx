@@ -4,6 +4,7 @@ import { RegisterApi } from "./auth.api";
 import { Card, CardContent } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
+import { toast } from "sonner";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
@@ -19,17 +20,19 @@ export default function Register() {
       setLoading(true);
       setError("");
 
-      // Remember: your backend expects {name, email, password}
       await RegisterApi({ name, email, password });
-      
-      // After successful registration, send them to login
+        toast.success("Registration successful!", {
+          duration: 4000,
+          position: "top-right",
+        });
       navigate("/dashboard");
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Something went wrong");
-      }
+        const errorMessage = error.response?.data?.detail || "Registration failed";
+        setError(errorMessage);
+        toast.error(errorMessage, {
+          duration: 4000,
+          position: "top-right",
+        });
     } finally {
       setLoading(false);
     }
@@ -61,9 +64,6 @@ export default function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          {error && (
-            <p className="text-red-500 text-sm text-center">{error}</p>
-          )}
 
           <Button
             onClick={handleRegister}

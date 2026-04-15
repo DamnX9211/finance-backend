@@ -71,7 +71,13 @@ export default function Records() {
     fetchRecords();
   };
   if (loading) return <p>Loading records...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error?.includes("403")) {
+  return (
+    <div className="text-center text-zinc-400 py-10">
+      You don’t have permission to view this.
+    </div>
+  );
+}
 
   return (
     <div className="space-y-6">

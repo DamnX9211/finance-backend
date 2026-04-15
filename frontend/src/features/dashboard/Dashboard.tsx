@@ -31,7 +31,13 @@ export default function Dashboard() {
   if (loading) return <div>Loading Dashboard...</div>;
  
   if (!data) return <div>No data available</div>;
-   if (error) return <div>Error: {error}</div>;
+   if (error?.includes("403")) {
+  return (
+    <div className="text-center text-zinc-400 py-10">
+      You don’t have permission to view this.
+    </div>
+  );
+}
 
   return (
     
